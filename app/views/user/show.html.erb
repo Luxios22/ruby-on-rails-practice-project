@@ -1,0 +1,47 @@
+<div class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8 bg-white">
+  <div class="mx-auto max-w-4xl">
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base font-semibold leading-7 text-gray-900">Profile</h3>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Account details.</p>
+    </div>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <%= turbo_frame_tag :username do %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Username</dt>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="flex-grow"><%= current_user.username %></span>
+            <span class="ml-4 flex-shrink-0">
+              <%= link_to "Update", edit_user_path, class: "rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500" %>
+            </span>
+          </dd>
+        </div>
+        <% end %>
+        <%= turbo_frame_tag :email do %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="flex-grow"><%= current_user.email %></span>
+            <span class="ml-4 flex-shrink-0 <%= current_user.google_account? ? "invisible": "" %>">
+              <%= link_to "Update", edit_user_path, class: "rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500" %>
+            </span>
+          </dd>
+        </div>
+        <% end %>
+        <%  unless current_user.google_account? %>
+        <%=   turbo_frame_tag :password do %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Password</dt>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="flex-grow">********</span>
+            <span class="ml-4 flex-shrink-0">
+              <%= link_to "Update", edit_user_path, class: "rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500" %>
+            </span>
+          </dd>
+        </div>
+        <%    end %>
+        <%  end %>
+      </dl>
+    </div>
+  </div>
+</div>

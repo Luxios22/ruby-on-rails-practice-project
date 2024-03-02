@@ -1,0 +1,13 @@
+test_user:
+  username: test
+  email: old@email.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'test1234') %>
+  created_at: <%= Time.zone.now %>
+  role: :regular
+
+test_librarian:
+  username: librarian
+  email: librarian@email.com
+  encrypted_password: <%= Devise::Encryptor.digest(User, 'test1234') %>
+  created_at: <%= Time.zone.now %>
+  role: :librarian

@@ -1,0 +1,40 @@
+<div class="bg-white">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:px-0">
+    <h1 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Reserved Books</h1>
+    <% if @reservations.empty? %>
+      <p class="text-center mt-2 text-sm text-gray-500">You have no reserved books</p>
+    <% end %>
+    <ul role="list" class="divide-y divide-gray-200 border-b border-t border-gray-200">
+      <% @reservations.each do |reservation| %>
+        <li class="flex py-6">
+          <!-- Book details here -->
+          <div class="flex-shrink-0">
+            <%= cl_image_tag reservation.book.cover.key, class: "w-24 aspect-book rounded-md object-cover object-center sm:w-32" %>
+          </div>
+          <div class="ml-4 flex flex-1 flex-col sm:ml-6">
+            <div>
+              <div class="flex justify-between">
+                <h4 class="text-sm">
+                  <%= link_to reservation.book.title, reservation.book, class: "font-medium text-gray-700 hover:text-gray-800" %>
+                </h4>
+                <p class="ml-4 text-sm font-medium text-gray-900"><%= reservation.book.author %></p>
+              </div>
+              <p class="mt-1 text-sm text-gray-500">ISBN: <%= reservation.book.isbn %></p>
+              <p class="mt-1 text-sm text-gray-500 line-clamp-5"><%= reservation.book.description %></p>
+            </div>
+            <div class="mt-4 flex flex-1 items-end justify-between">
+              <p class="text-sm text-gray-700">Reserved on: <%= reservation.created_at.strftime("%Y-%m-%d") %></p>
+              <!-- Optional: Add a cancel reservation link or button here -->
+              <%= form_with url: reservation_path(reservation), method: :delete, class: "inline" do %>
+                <%= submit_tag 'Cancel Reservation', class: "text-sm text-red-600 hover:text-red-500", data: { confirm: 'Are you sure?' } %>
+              <% end %>
+            </div>
+            <div class="mt-2 flex text-sm font-medium">
+            <%= link_to "View Book", reservation.book, class: "text-indigo-600 hover:text-indigo-500" %>
+            </div>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+</div>

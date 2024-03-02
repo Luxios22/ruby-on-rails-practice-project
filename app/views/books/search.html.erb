@@ -1,0 +1,19 @@
+<main class="pb-24">
+  <div class="px-4 py-16 text-center sm:px-6 lg:px-8">
+    <h1 class="text-4xl tracking-tight text-gray-900">
+      <span>Books containing</span>
+      <span class="font-bold">"<%= params[:q][:title_or_author_or_isbn_cont] %>"</span>
+    </h1>
+  </div>
+
+  <section aria-labelledby="products-heading" class="mx-auto max-w-7xl overflow-hidden sm:px-6 lg:px-8">
+    <h2 id="products-heading" class="sr-only">Search results</h2>
+
+    <div class="-mx-px grid grid-cols-2 border-l border-t border-gray-200 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+      <%= render partial: "book_item", collection: @books, as: 'book' %>
+    </div>
+  </section>
+
+  <%= render "pagination" %>
+
+</main>

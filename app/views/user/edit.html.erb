@@ -1,0 +1,74 @@
+<% input_class = "block w-full rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"  %>
+<% submit_class = "rounded-md bg-white font-medium text-indigo-600 hover:text-indigo-500 cursor-pointer"  %>
+<div class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8">
+  <div class="mx-auto max-w-4xl">
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base font-semibold leading-7 text-gray-900">Edit Profile</h3>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Edit account details.</p>
+    </div>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <%= turbo_frame_tag :username do %>
+        <%=   form_for(resource, as: resource_name, url: user_registration_path, html: { method: :put }) do |f| %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <%= f.label "Username", class: "text-sm font-medium leading-6 text-gray-900" %>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= f.text_field :username, value: current_user.username, autocomplete: :username, class: input_class %>
+
+            <span class="ml-4 flex-shrink-0">
+              <%= f.submit "Save", class: submit_class %>
+            </span>
+          </dd>
+        </div>
+        <%   end %>
+        <% end %>
+        <%= turbo_frame_tag :email do %>
+        <%=   form_for(resource, as: resource_name, url: user_registration_path, html: { method: :put }) do |f| %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <%= f.label "Email address", class: "text-sm font-medium leading-6 text-gray-900" %>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= f.text_field :email, value: current_user.email, autocomplete: :email, class: input_class %>
+
+            <span class="ml-4 flex-shrink-0">
+              <%= f.submit "Save", class: submit_class %>
+            </span>
+          </dd>
+        </div>
+        <%   end %>
+        <% end %>
+        <%= turbo_frame_tag :password do %>
+        <%=   form_for(resource, as: resource_name, url: user_registration_path, html: { method: :put }) do |f| %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <%= f.label "Current password", class: "text-sm font-medium leading-6 text-gray-900" %>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= f.password_field :current_password, autocomplete: :password, class: input_class %>
+            <span class="invisible ml-4 flex-shrink-0">
+              <%= f.submit "Save", class: submit_class %>
+            </span>
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <%= f.label "New password", class: "text-sm font-medium leading-6 text-gray-900" %>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= f.password_field :password, autocomplete: :password, class: input_class %>
+            <span class="invisible ml-4 flex-shrink-0">
+              <%= f.submit "Save", class: submit_class %>
+            </span>
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <%= f.label "Password Confirmation", class: "text-sm font-medium leading-6 text-gray-900" %>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <%= f.password_field :password_confirmation, autocomplete: :password_confirmation, class: input_class %>
+            <span class="ml-4 flex-shrink-0">
+              <%= f.submit "Save", class: submit_class %>
+            </span>
+          </dd>
+        </div>
+        <%   end %>
+        <% end %>
+      </dl>
+    </div>
+  </div>
+</div>
+

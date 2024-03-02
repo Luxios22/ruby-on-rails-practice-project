@@ -1,0 +1,137 @@
+<div class="mx-auto max-w-2xl px-4 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-3 lg:gap-x-8 lg:px-8">
+  <div class="lg:max-w-2xl lg:self-end col-span-2">
+    <nav aria-label="Breadcrumb">
+      <ol role="list" class="flex items-center space-x-2">
+        <li>
+          <div class="flex items-center text-sm">
+            <%= link_to  "Books", books_path, class: "font-medium text-gray-500 hover:text-gray-900" %>
+            <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="ml-2 h-5 w-5 flex-shrink-0 text-gray-300">
+              <path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
+            </svg>
+          </div>
+        </li>
+        <li>
+          <div class="flex items-center text-sm">
+            <% if @book.category %>
+              <%= link_to @book.category.name, books_path(:q => {:category_id_eq => @book.category_id}), class: "font-medium text-gray-500 hover:text-gray-900" %>
+            <% else %>
+              <span class="font-medium text-gray-500">Uncategorized</span>
+            <% end %>
+          </div>
+        </li>
+      </ol>
+    </nav>
+    <div class="mt-4">
+      <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl"><%= @book.title %></h1>
+    </div>
+
+    <section aria-labelledby="information-heading" class="mt-4">
+      <h2 id="information-heading" class="sr-only">Book information</h2>
+      <div class="flex items-center">
+          <p class="text-sm text-gray-700 dark:text-gray-500">First Edition</p>
+
+          <div class="ml-4 border-l border-gray-300 pl-4">
+            <div class="flex items-center">
+              <p class="ml-1 text-sm text-gray-700 dark:text-gray-500">By <%= @book.author %></p>
+            </div>
+          </div>
+        </div>
+
+      <div class="mt-4 space-y-6">
+        <p class="text-base text-gray-500"><%= @book.description %></p>
+      </div>
+      <div class="mt-6 flex items-center">
+        <svg class="h-5 w-5 flex-shrink-0 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+        </svg>
+        <p class="ml-2 text-sm text-gray-500">In good condition</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- Product image -->
+  <div class="mt-10 lg:col-start-3 lg:row-span-2 lg:mt-0 lg:self-center">
+    <div class="aspect-book overflow-hidden rounded-lg">
+      <%= cl_image_tag(@book.cover.key, class: "h-full w-full object-cover object-center") %>
+    </div>
+  </div>
+
+  <!-- Product form -->
+  <% status_class = "flex w-full items-center justify-center rounded-md font-medium px-8 py-3 text-base" %>
+  <div class="mt-10 lg:col-start-1 lg:col-span-2 lg:row-start-2 lg:max-w-2xl lg:self-start">
+    <section aria-labelledby="options-heading">
+      <h2 id="options-heading" class="sr-only">Product options</h2>
+          <div class="sm:flex sm:justify-between">
+            <fieldset class="w-full">
+              <legend class="block text-sm font-medium text-gray-700">Detail</legend>
+              <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-3">
+                <div class="relative block rounded-lg border border-gray-300 p-4 focus:outline-none">
+                  <input type="radio" name="size-choice" value="18L" class="sr-only" aria-labelledby="size-choice-0-label" aria-describedby="size-choice-0-description">
+                  <p id="size-choice-0-label" class="text-base font-medium text-gray-900">Pages</p>
+                  <p id="size-choice-0-description" class="mt-1 text-sm text-gray-500">323</p>
+
+                  <div class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></div>
+                </div>
+                <div class="relative block rounded-lg border border-gray-300 p-4 focus:outline-none">
+                  <input type="radio" name="size-choice" value="20L" class="sr-only" aria-labelledby="size-choice-1-label" aria-describedby="size-choice-1-description">
+                  <p id="size-choice-1-label" class="text-base font-medium text-gray-900">Language</p>
+                  <p id="size-choice-1-description" class="mt-1 text-sm text-gray-500">English</p>
+                  <div class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></div>
+                </div>
+                <div class="relative block rounded-lg border border-gray-300 p-4 focus:outline-none">
+                  <input type="radio" name="size-choice" value="18L" class="sr-only" aria-labelledby="size-choice-0-label" aria-describedby="size-choice-0-description">
+                  <p id="size-choice-0-label" class="text-base font-medium text-gray-900">ISBN</p>
+                  <p id="size-choice-0-description" class="mt-1 text-sm text-gray-500"><%= @book.isbn %></p>
+                  <div class="pointer-events-none absolute -inset-px rounded-lg border-2" aria-hidden="true"></div>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+          <div class="mt-4">
+            <a href="#" class="group inline-flex text-sm text-gray-500 hover:text-gray-700">
+              <span>How long can I borrow a book for?</span>
+              <svg class="ml-2 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM8.94 6.94a.75.75 0 11-1.061-1.061 3 3 0 112.871 5.026v.345a.75.75 0 01-1.5 0v-.5c0-.72.57-1.172 1.081-1.287A1.5 1.5 0 108.94 6.94zM10 15a1 1 0 100-2 1 1 0 000 2z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </div>
+          <% if user_signed_in? %>
+          <% if @book.borrowed? %>
+          <div class="mt-10">
+            <%  if @book.borrowed_by?(current_user) %>
+            <%=   turbo_frame_tag "book-action" do %>
+            <%=     form_with url: borrowing_path(@book.borrowing), method: :delete do |form| %>
+            <%=       form.hidden_field :book_id, value: @book.id %>
+            <%=         form.submit "Return", class: status_class + " cursor-pointer border-transparent bg-green-400 text-white hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" %>
+            <%      end %>
+            <%    end %>
+            <% else %>
+            <div class="<%= status_class %> border-black bg-gray-500 text-white">Borrowed</div>
+            <% end %>
+          </div>
+          <% elsif @book.reserved? %>
+          <div class="mt-10">
+            <div class="<%= status_class %> border-black bg-gray-500 text-white">Reserved</div>
+          </div>
+          <% else %>
+          <div class="mt-10">
+            <%= turbo_frame_tag "book-action" do %>
+            <%=   form_with url: borrowings_path do |form| %>
+            <%=     form.hidden_field :book_id, value: @book.id %>
+            <%=       form.submit "Check out", class: status_class + " cursor-pointer border-transparent bg-indigo-600 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" %>
+            <%    end %>
+            <%  end %>
+          </div>
+          <!-- Reserve button -->
+          <div class="mt-4">
+            <%= turbo_frame_tag "reserve-book-action" do %>
+              <%= render partial: "books/reserve_button", locals: { book: @book } %>
+            <% end %>
+          </div>
+          <% end %>
+          <% end %>
+    </section>
+  </div>
+</div>
+
+

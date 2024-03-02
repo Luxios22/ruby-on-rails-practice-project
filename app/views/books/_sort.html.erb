@@ -1,0 +1,22 @@
+<% drop_down_hidden_classes = ["opacity-0", "scale-0", "ease-in", "duration-75"] %>
+<% drop_down_visible_classes = ["opacity-100", "scale-100", "ease-out", "duration-100"] %>
+<div class="relative inline-block text-left" data-controller="drop-down" data-drop-down-options-open-value="false" data-drop-down-hidden-classes-value='<%= drop_down_hidden_classes %>' data-drop-down-visible-classes-value='<%= drop_down_visible_classes %>'>
+  <div>
+    <button type="button" class="group inline-flex justify-center text-sm font-medium text-gray-700 hover:text-gray-900" id="menu-button" aria-expanded="false" aria-haspopup="true" data-action="drop-down#toggleOptions">
+      Sort
+      <svg class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+      </svg>
+    </button>
+  </div>
+
+  <div class="<%= drop_down_hidden_classes.join " " %> absolute left-0 z-10 mt-2 w-40 origin-top-left rounded-md bg-white shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" data-drop-down-target="options">
+    <div class="py-1" role="none">
+      <!-- Active: "bg-gray-100", Not Active: "" -->
+      <%= link_to "Latest", sort_url(@q, :created_at, default_order: :desc), class: "block px-4 py-2 text-sm font-medium text-gray-900", role: "menuitem", tabindex: "-1" %>
+      <%= link_to "Oldest", sort_url(@q, :created_at, default_order: :asc), class: "block px-4 py-2 text-sm font-medium text-gray-900", role: "menuitem", tabindex: "-1" %>
+      <%= link_to "A-Z", sort_url(@q, :title, default_order: :asc), class: "block px-4 py-2 text-sm font-medium text-gray-900", role: "menuitem", tabindex: "-1" %>
+      <%= link_to "Z-A", sort_url(@q, :title, default_order: :asc), class: "block px-4 py-2 text-sm font-medium text-gray-900", role: "menuitem", tabindex: "-1" %>
+    </div>
+  </div>
+</div>

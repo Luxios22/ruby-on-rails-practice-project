@@ -1,0 +1,143 @@
+<%= search_form_for @q do |search_form| %>
+<div data-controller="off-canvas" data-off-canvas-is-open-value="false">
+  <div class="invisible relative z-40 sm:hidden" role="dialog" aria-modal="true" data-off-canvas-target="offCanvas">
+    <div class="transition-opacity ease-linear duration-300 fixed inset-0 bg-black bg-opacity-25" data-off-canvas-target="backdrop"></div>
+
+    <div class="fixed inset-0 z-40 flex">
+      <div class="transition ease-in-out duration-300 transform relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-6 shadow-xl" data-off-canvas-target="menu">
+        <div class="flex items-center justify-between px-4">
+          <h2 class="text-lg font-medium text-gray-900">Filters</h2>
+          <button type="button" class="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500" data-action="off-canvas#toggleMenu">
+            <span class="sr-only">Close menu</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form class="mt-4">
+          <div class="border-t border-gray-200 px-4 py-6" data-controller="drop-down" data-drop-down-options-open-value="false" data-drop-down-hidden-classes-value='["hidden"]' data-drop-down-visible-classes-value='[]' data-drop-down-open-button-classes-value='["-rotate-180"]' data-drop-down-close-button-classes-value='["rotate-0"]'>
+            <h3 class="-mx-2 -my-3 flow-root">
+              <button type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400" aria-controls="filter-section-0" aria-expanded="false" data-action="drop-down#toggleOptions">
+                <span class="font-medium text-gray-900">Category</span>
+                <span class="ml-6 flex items-center">
+                  <svg class="h-5 w-5 transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-drop-down-target="open" data-drop-down-target="close">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </button>
+            </h3>
+            <div class="pt-6" id="filter-section-0" data-drop-down-target="options">
+              <div class="space-y-6">
+                <% Category.all.each_with_index do |category, index| %>
+                  <div class="flex items-center">
+                  <%= check_box_tag 'q[category_id_eq]', category.id, params.dig(:q, :category_id_eq) == (index+1).to_s, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[category_id_eq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()" %>
+                    <%= label_tag "category_id_eq", category.name, class: "ml-3 text-sm text-gray-500" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div class="border-t border-gray-200 px-4 py-6" data-controller="drop-down" data-drop-down-options-open-value="false" data-drop-down-hidden-classes-value='["hidden"]' data-drop-down-visible-classes-value='[]' data-drop-down-open-button-classes-value='["-rotate-180"]' data-drop-down-close-button-classes-value='["rotate-0"]'>
+            <h3 class="-mx-2 -my-3 flow-root">
+              <button type="button" class="flex w-full items-center justify-between bg-white px-2 py-3 text-sm text-gray-400" aria-controls="filter-section-0" aria-expanded="false" data-action="drop-down#toggleOptions">
+                <span class="font-medium text-gray-900">Published date</span>
+                <span class="ml-6 flex items-center">
+                  <svg class="h-5 w-5 transform" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-drop-down-target="open" data-drop-down-target="close">
+                    <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </button>
+            </h3>
+            <div class="pt-6" id="filter-section-1" data-drop-down-target="options">
+              <div class="space-y-6">
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 3.days, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.week)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "3 days", class: "ml-3 text-sm text-gray-500" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.week, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.month) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.week)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 week", class: "ml-3 text-sm text-gray-500" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.month, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.year) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.month)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 month", class: "ml-3 text-sm text-gray-500" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.year, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.year)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 year", class: "ml-3 text-sm text-gray-500" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <section aria-labelledby="filter-heading" class="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:max-w-7xl lg:px-8 border-t border-gray-200 py-6">
+    <h2 id="filter-heading" class="sr-only">Product filters</h2>
+
+    <div class="flex items-center justify-between">
+      <%= render "sort" %>
+
+      <button type="button" class="inline-block text-sm font-medium text-gray-700 hover:text-gray-900 sm:hidden" data-action="off-canvas#toggleMenu">Filters</button>
+        <div class="hidden sm:flex sm:items-baseline sm:space-x-8">
+          <div id="desktop-menu-0" class="relative inline-block text-left" data-controller="drop-down" data-drop-down-options-open-value="false" data-drop-down-hidden-classes-value='["opacity-0", "scale-0", "ease-in", "duration-75"]' data-drop-down-visible-classes-value='["opacity-100", "scale-100", "ease-out", "duration-100"]'>
+            <div>
+              <button type="button" class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" data-action="drop-down#toggleOptions">
+                <span>Category</span>
+                <svg class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="opacity-0 scale-0 ease-in duration-75 absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" data-drop-down-target="options">
+              <div class="space-y-4">
+                <% Category.all.each_with_index do |category, index| %>
+                  <div class="flex items-center">
+                  <%= check_box_tag 'q[category_id_eq]', category.id, params.dig(:q, :category_id_eq) == (index+1).to_s, class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[category_id_eq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()" %>
+                    <%= label_tag "category_id_eq", category.name, class: "ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900" %>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </div>
+          <div id="desktop-menu-1" class="relative inline-block text-left" data-controller="drop-down" data-drop-down-options-open-value="false" data-drop-down-hidden-classes-value='["opacity-0", "scale-0", "ease-in", "duration-75"]' data-drop-down-visible-classes-value='["opacity-100", "scale-100", "ease-out", "duration-100"]'>
+            <div>
+              <button type="button" class="group inline-flex items-center justify-center text-sm font-medium text-gray-700 hover:text-gray-900" aria-expanded="false" data-action="drop-down#toggleOptions">
+                <span>Published date</span>
+                <svg class="-mr-1 ml-1 h-5 w-5 flex-shrink-0 text-gray-400 group-hover:text-gray-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                </svg>
+              </button>
+            </div>
+
+            <div class="opacity-0 scale-0 ease-in duration-75 absolute right-0 z-10 mt-2 origin-top-right rounded-md bg-white p-4 shadow-2xl ring-1 ring-black ring-opacity-5 focus:outline-none" data-drop-down-target="options">
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 3.days, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.week)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "3 days", class: "ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.week, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.month) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.week)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 week", class: "ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.month, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime < 1.year) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.month)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 month", class: "ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900" %>
+                </div>
+                <div class="flex items-center">
+                  <%= check_box_tag('q[created_at_gteq]', Time.now - 1.year, ((params.dig(:q, :created_at_gteq) != nil) and (Time.now - params[:q][:created_at_gteq].to_datetime > 1.year)), class: "h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500", onclick: "this.form.querySelectorAll('input[name=\"q[created_at_gteq]\"]').forEach(e => e.checked=false);this.checked=true;this.form.submit()") %>
+                  <%= label_tag "category_id_eq", "1 year", class: "ml-3 whitespace-nowrap pr-6 text-sm font-medium text-gray-900" %>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </section>
+</div>
+<% end %>

@@ -1,0 +1,11 @@
+<div id="flash" aria-live="assertive" class="z-40 pointer-events-none fixed inset-0 flex flex-col gap-y-4 items-end px-4 py-6 sm:items-start sm:p-6">
+<% flash.each_with_index do |(flash_type, message), index| %>
+  <% if message.kind_of?(Array) %>
+  <%   message.each_with_index do |m, index| %>
+  <%=    render "partials/flash", index: index, message: m, flash_type: flash_type %>
+  <%   end %>
+  <% else %>
+  <%=  render "partials/flash", index: index, message: message, flash_type: flash_type %>
+  <% end %>
+<% end %>
+</div>

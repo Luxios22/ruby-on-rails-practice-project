@@ -1,0 +1,14 @@
+<% status_class = "flex w-full items-center justify-center rounded-md font-medium px-8 py-3 text-base" %>
+<% if user_signed_in? && !book.borrowed? %>
+  <% if book.reserved? %>
+    <div class="<%= status_class %> bg-gray-500 text-white cursor-not-allowed">
+      Reserved
+    </div>
+  <% else %>
+    <%= form_with url: reservations_path, method: :post do |form| %>
+      <%= form.hidden_field :book_id, value: book.id %>
+      <% reserve_button_class = current_user.can_reserve_books? ? "bg-orange-400 hover:bg-orange-500" : "bg-gray-500 cursor-not-allowed" %>
+      <%= form.submit "Reserve", class: "#{status_class} #{reserve_button_class} border-transparent text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50" %>
+    <% end %>
+  <% end %>
+<% end %>

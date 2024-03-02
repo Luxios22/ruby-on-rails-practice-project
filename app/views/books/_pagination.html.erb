@@ -1,0 +1,33 @@
+<% link_class = "inline-flex h-10 items-center rounded-md border px-4" %>
+<% disabled_class = "bg-gray-100 text-gray-400" %>
+<% active_class = "bg-white hover:bg-gray-100 focus:border-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-opacity-25 focus:ring-offset-1 focus:ring-offset-indigo-600" %>
+<% link = pagy_link_proc(@pagy) %>
+<% selected_class = "border-indigo-600 ring-1 ring-indigo-600" %>
+<% not_selected_class = "border-gray-300" %>
+<nav class="mx-auto mt-6 flex max-w-7xl justify-between px-4 text-sm font-medium text-gray-700 sm:px-6 lg:px-8" role="navigation" aria-label="pagination">
+  <div class="min-w-0 flex-1">
+    <% if @pagy.prev %>
+    <%== link.call(@pagy.prev, "Previous", 'class="' + link_class + " " + active_class + " " + not_selected_class + '" aria-label="previous page"') %>
+    <% else %>
+    <a class="<%= link_class + " " + disabled_class %>" disabled>Previous</a>
+    <% end %>
+  </div>
+  <div class="hidden space-x-2 sm:flex">
+    <% @pagy.series.each do |item| # series example: [1, :gap, 7, 8, "9", 10, 11, :gap, 36] -%>
+    <%   if    item.is_a?(Integer) -%>
+    <%==   link.call item, item, %(class="#{[link_class, active_class, not_selected_class].join " "}" aria-label="goto page #{item}") %>
+    <%   elsif item.is_a?(String)  -%>
+    <%==   link.call item, item, %(class="#{[link_class, active_class, selected_class].join " "}" aria-label="page #{item}" aria-current="page") %>
+    <%   elsif item == :gap        -%>
+      <span class="inline-flex h-10 items-center px-1.5 text-gray-500">...</span>
+    <%   end %>
+    <% end %>
+  </div>
+  <div class="flex min-w-0 flex-1 justify-end">
+    <% if @pagy.next %>
+    <%== link.call(@pagy.next, "Next", 'class="' + link_class + " " + active_class + " " + not_selected_class + '" aria-label="previous page"') %>
+    <% else %>
+    <a class="<%= link_class + " " + disabled_class %>" disabled>Next</a>
+    <% end %>
+  </div>
+</nav>

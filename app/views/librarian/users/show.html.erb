@@ -1,0 +1,75 @@
+<div class="mx-auto max-w-7xl py-12 sm:px-6 lg:px-8 bg-white">
+  <div class="mx-auto max-w-4xl">
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base font-semibold leading-7 text-gray-900">Profile</h3>
+      <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Account details.</p>
+    </div>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Username</dt>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="flex-grow"><%= @user.username %></span>
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Email address</dt>
+          <dd class="mt-1 flex text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <span class="flex-grow"><%= @user.email %></span>
+          </dd>
+        </div>
+        <% unless current_user.librarian? %>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Borrowed books</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <% if @user.borrowing_books.empty? %>
+              <span class="truncate font-medium">Currently does not borrow any books</span>
+            <% else %>
+            <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+              <% @user.borrowings.each do |borrowing| %>
+              <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                <div class="flex w-0 flex-1 items-center">
+                  <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                    <span class="truncate font-medium"><%= borrowing.book.title %></span>
+                    <span class="truncate font-normal">by</span>
+                    <span class="truncate font-medium"><%= borrowing.book.author %></span>
+                    <% if borrowing.overdue? %>
+                    <span class="flex-shrink-0 text-red-400 font-semibold">Overdue</span>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+              <% end %>
+            </ul>
+            <% end %>
+          </dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Borrowing history</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <ul role="list" class="divide-y divide-gray-100 rounded-md border border-gray-200">
+              <% @user.user_activities.order(updated_at: :desc).each do |activity| %>
+              <li class="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
+                <div class="flex w-0 flex-1 items-center">
+                  <div class="ml-4 flex min-w-0 flex-1 gap-2">
+                    <span class="font-medium"><%= activity.book.title %></span>
+                    <span class="font-normal">by</span>
+                    <span class="font-medium"><%= activity.book.author %></span>
+                    <% if activity.active %>
+                    <span class="truncate text-gray-400">Borrowed at <%= activity.updated_at.strftime("%A, %B %d, %Y, %H:%M:%S") %></span>
+                    <% else %>
+                    <span class="truncate text-gray-400">Returned at <%= activity.updated_at.strftime("%A, %B %d, %Y, %H:%M:%S") %></span>
+                    <% end %>
+                  </div>
+                </div>
+              </li>
+              <% end %>
+            </ul>
+          </dd>
+        </div>
+        <% end %>
+      </dl>
+    </div>
+  </div>
+</div>
+

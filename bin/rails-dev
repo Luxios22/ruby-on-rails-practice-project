@@ -1,0 +1,8 @@
+#/bin/sh
+
+bundle install
+./bin/rails assets:precompile
+./bin/rails assets:clobber
+./bin/rails tailwindcss:watch[always,poll,debug] &
+./bin/rails db:migrate
+./bin/rails s -b 0.0.0.0 -p 3000

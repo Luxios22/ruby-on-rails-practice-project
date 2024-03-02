@@ -1,0 +1,28 @@
+<main class="w-full max-w-md mx-auto p-6">
+  <div
+    class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div class="p-4 sm:p-7">
+      <div class="text-center">
+        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
+          Edit profile
+        </h1>
+      </div>
+
+      <%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <%= render "partials/formfield", field_name: :email, f: f %>
+      <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+      <div>
+        Currently waiting confirmation for: <%= resource.unconfirmed_email %>
+      </div>
+      <% end %>
+      <%= render "partials/formfield", field_name: :new_password, f: f %>
+      <%= render "partials/formfield", field_name: :password_confirmation, f: f %>
+      <%= render "partials/formfield", field_name: :current_password, f: f %>
+      <%= render "partials/submitbutton", text: "Update", f: f %>
+      <% end %>
+    </div>
+  </div>
+</main>

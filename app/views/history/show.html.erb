@@ -1,0 +1,61 @@
+<div class="bg-white">
+  <div class="mx-auto max-w-4xl py-16 sm:px-6 sm:py-24">
+    <div class="px-4 sm:px-0">
+      <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-3xl">History</h1>
+      <% if @history.empty? %>
+      <p class="mt-2 text-sm text-gray-500">You have not borrowed or reserved any books</p>
+      <% else %>
+      <p class="mt-2 text-sm text-gray-500">Check the status of recently borrowed books and reservations.</p>
+      <% end %>
+    </div>
+
+    <div class="mt-16">
+      <h2 class="sr-only">History</h2>
+      <div class="mt-6 flow-root px-4 sm:mt-10 sm:px-0">
+        <div class="-my-6 divide-y divide-gray-200 sm:-my-10">
+          <% @history.map do |activity| %>
+          <div class="flex py-6 sm:py-10">
+            <div class="min-w-0 flex-1 lg:flex lg:flex-col">
+              <div class="lg:flex-1">
+                <div class="sm:flex">
+                  <div>
+                    <h4 class="font-medium text-gray-900"><%= activity.book.title %></h4>
+                    <p class="mt-2 hidden text-sm text-gray-500 sm:block">ISBN: <%= activity.book.isbn %></p>
+                    <p class="mt-8 hidden text-sm text-gray-500 sm:line-clamp-6"><%= activity.book.description %></p>
+                  </div>
+                  <p class="mt-1 font-medium text-gray-900 sm:ml-6 sm:mt-0"><%= activity.book.author %></p>
+                </div>
+                <div class="mt-2 flex text-sm font-medium sm:mt-4">
+                  <%= link_to "View Book", activity.book, class: "text-indigo-600 hover:text-indigo-500" %>
+                  <% unless activity.active %>
+                    <div class="ml-4 border-l border-gray-200 pl-4 sm:ml-6 sm:pl-6">
+                      <%= link_to "Borrow Again", activity.book, class: "text-indigo-600 hover:text-indigo-500" %>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="mt-6 font-medium">
+                <% if activity.active %>
+                <p>Borrowed at <%= activity.updated_at.strftime("%A, %B %d, %Y, %H:%M:%S") %></p>
+                <% else %>
+                <p class="flex items-center space-x-2">
+                  <svg class="h-5 w-5 flex-shrink-0 text-green-500" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
+                  </svg>
+                <span>Returned at <%= activity.updated_at.strftime("%A, %B %d, %Y, %H:%M:%S") %></span>
+                </p>
+                <% end %>
+              </div>
+            </div>
+            <div class="ml-4 flex-shrink-0 sm:order-first sm:m-0 sm:mr-6">
+              <%= cl_image_tag activity.book.cover.key, class: "col-start-2 col-end-3 aspect-book w-20 rounded-lg object-cover object-center sm:col-start-1 sm:row-span-2 sm:row-start-1 sm:w-40 lg:w-52" %>
+            </div>
+          </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

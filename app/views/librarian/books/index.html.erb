@@ -1,0 +1,114 @@
+<% success_button_class =  "flex items-center py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+   danger_button_class = "flex items-center py-2 px-3 flex items-center text-sm font-medium text-center text-red-700 hover:text-white border border-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-3 py-2 text-center dark:border-red-500 dark:text-red-500 dark:hover:text-white dark:hover:bg-red-600 dark:focus:ring-red-900"
+   row_text_class = "px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+   add_button_style = "cursor-pointer mt-5 py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+%>
+<!-- Start block -->
+        <section class="bg-gray-50 dark:bg-gray-900 p-3 sm:p-5 antialiased">
+            <div class="mx-auto max-w-screen-2xl px-4 lg:px-12">
+                <div class="bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden">
+                    <div class="flex flex-col md:flex-row items-stretch md:items-center md:space-x-3 space-y-3 md:space-y-0 justify-between mx-4 py-4 border-t dark:border-gray-700">
+                        <%= render "partials/librarian/search_bar", search_term: :title_or_author_or_isbn_cont, filter_term: :overdue_eq, filter_text: "Overdue", url: url_for(controller: 'books', action: 'index'), placeholder: "Search books" %>
+                        <% if user_signed_in? && (current_user.librarian? || current_user.admin?) %>
+                          <%= button_to "Add a New Book", { :action => "new"}, {:method => :get, :class => add_button_style} %>
+                        <% end %>
+                      </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                <tr>
+                                    <th scope="col" class="p-4">
+                                        <div class="flex items-center">
+                                            <input id="checkbox-all" type="checkbox" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="checkbox-all" class="sr-only">checkbox</label>
+                                        </div>
+                                    </th>
+                                    <th scope="col" class="p-4">Title</th>
+                                    <th scope="col" class="p-4">Author</th>
+                                    <th scope="col" class="p-4">ISBN</th>
+                                    <th scope="col" class="p-4">Status</th>
+                                    <th scope="col" class="p-4">Details</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% @books.each do |book| %>
+                                  <tr class="border-b dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <td class="p-4 w-4">
+                                      <div class="flex items-center">
+                                        <input id="checkbox-table-search-1" type="checkbox" onclick="event.stopPropagation()" class="w-4 h-4 text-primary-600 bg-gray-100 rounded border-gray-300 focus:ring-primary-500 dark:focus:ring-primary-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="checkbox-table-search-1" class="sr-only">checkbox</label>
+                                      </div>
+                                    </td>
+                                    <th scope="row" class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                      <div class="flex items-center mr-3">
+                                        <%= cl_image_tag(book.cover.key, class: "h-8 w-auto mr-3") %>
+                                        <%= book.title %>
+                                      </div>
+                                    </th>
+                                    <td class="<%= row_text_class %>">
+                                      <div class="flex items-center">
+                                        <%= book.author %>
+                                      </div>
+                                    </td>
+                                    <td class="<%= row_text_class %>">
+                                      <div class="flex items-center">
+                                        <%= book.isbn %>
+                                      </div>
+                                    </td>
+                                    <td class="<%= row_text_class %>">
+                                      <% if book.borrowed? %>
+                                      <div class="<%= danger_button_class %>">
+                                        Borrowed
+                                      </div>
+                                      <% else %>
+                                      <div class="<%= success_button_class %>">
+                                        Available
+                                      </div>
+                                      <% end %>
+                                    </td>
+                                    <td class="px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                      <div class="flex items-center space-x-4">
+                                        <%= link_to librarian_book_path(book), class: "py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" do %>
+                                          <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
+                                            <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                            <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
+                                          </svg>
+                                          Preview
+                                        <% end %>
+                                        <% if user_signed_in? && (current_user.librarian? || current_user.admin?) %>
+                                          <%= link_to edit_librarian_book_path(book), class: "py-2 px-3 flex items-center text-sm font-medium text-center text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700" do %>
+                                            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24" fill="currentColor" class="w-4 h-4 mr-2 -ml-0.5">
+                                              <path d="M12 15a3 3 0 100-6 3 3 0 000 6z" />
+                                              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 010-1.113zM17.25 12a5.25 5.25 0 11-10.5 0 5.25 5.25 0 0110.5 0z" />
+                                            </svg>
+                                            Edit
+                                          <% end %>
+                                        <% end %>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                <% end %>
+                            </tbody>
+                        </table>
+                    </div>
+                    <nav class="flex flex-col md:flex-row justify-between items-start md:items-center space-y-3 md:space-y-0 p-4" aria-label="Table navigation">
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            Showing
+                            <span class="font-semibold text-gray-900 dark:text-white"><%= @book_start %>-<%= @book_end %></span>
+                            of
+                            <span class="font-semibold text-gray-900 dark:text-white"><%= @books_count %></span>
+                        </span>
+                        <span class="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            <%== pagy_nav(@pagy) %>
+                        </span>
+                    </nav>
+                    <%# Show `Suggest a book` link on the last page %>
+                    <% if @pagy.page == @pagy.last %>
+                      <div class="flex justify-center mt-1 mb-3">
+                        <%= link_to "Can't find what you're looking for? Suggest a book for purchase here", new_book_suggestion_path, class: 'text-blue-600 hover:text-blue-700' %>
+                      </div>
+                    <% end %>
+                </div>
+            </div>
+        </section>
+

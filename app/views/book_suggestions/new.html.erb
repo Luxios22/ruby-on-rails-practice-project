@@ -1,0 +1,33 @@
+<main class="w-full max-w-md mx-auto p-6">
+  <div
+    class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div class="p-4 sm:p-7">
+      <div class="text-center">
+        <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
+        Suggest a Book for Purchase
+        </h1>
+      </div>
+
+      <%= form_with model: @book_suggestion, local: true do |form| %>
+        <% if @book_suggestion.errors.any? %>
+          <div id="error_explanation">
+            <h2><%= pluralize(@book_suggestion.errors.count, "error") %> prohibited this book suggestion from being saved:</h2>
+            <ul>
+              <% @book_suggestion.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+
+        <%= render "partials/formfield", field_name: :title, f: form %>
+        <%= render "partials/formfield", field_name: :isbn, f: form %>
+        <%= render "partials/formfield", field_name: :author, f: form %>
+        <%= render "partials/formfield", field_name: :details, f: form %>
+
+        <%= render 'partials/submitbutton', f: form, text: 'Submit Suggestion' %>
+      <% end %>
+    </div>
+  </div>
+</main>

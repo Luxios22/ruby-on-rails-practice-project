@@ -1,0 +1,24 @@
+#!/bin/sh
+
+set -eu
+
+# RAILS_ENV=test
+DATABASE_USERNAME=${DATABASE_USERNAME:-psql}
+DATABASE_PASSWORD=${DATABASE_PASSWORD:-pql}
+DATABASE_HOST=${DATABASE_HOST:-localhost}
+
+STAGED_FILES=$(git diff --name-only --cached --diff-filter=AM)
+# Run RuboCop Safe Auto-Correct on staged .rb files
+echo "Running RuboCop safe auto-correct..."
+echo $STAGED_FILES | grep '\.rb$' | xargs -r -n 1 -P0 bundle exec rubocop -a
+
+git add $STAGED_FILES
+
+# Run RuboCop on staged .rb files
+echo "Running RuboCop..."
+echo $STAGED_FILES | grep '\.rb$' | xargs -r -n 1 -P0 bundle exec rubocop
+
+# Run RSpec tests
+echo "Running RSpec tests..."
+bundle exec rspec
+

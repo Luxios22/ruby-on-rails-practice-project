@@ -1,0 +1,8 @@
+first:
+  user: test_user
+  book: first
+  type: Borrowing
+second:
+  user: test_user
+  book: second
+  type: Borrowing

@@ -1,0 +1,31 @@
+<% input_style = "py-3 px-4 w-full block border-gray-200 text-sm rounded-lg
+focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50
+disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700
+dark:text-gray-400 dark:focus:ring-gray-600" %> <% label_style = "block text-sm
+mt-4 mb-2 dark:text-white" %>
+<main class="lg:w-[40%] m-w-lg p-6">
+  <div
+    class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+  >
+    <div class="p-4 sm:p-7">
+      <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">
+        Register a new librarian
+      </h1>
+
+      <div class="mt-5">
+        <%= form_with model: @user, url: "/librarian/librarians" do |f| %>
+        <%= f.label :email, class: label_style %>
+        <%= f.email_field :email, autocomplete: "email", class: input_style %>
+        <%= f.label :username, class: label_style %>
+        <%= f.text_field :username, autocomplete: "username", class: input_style %>
+        <%= f.label :password, class: label_style %>
+        <%= f.password_field :password, autocomplete: "password", class: input_style %>
+        <%= f.hidden_field :role, value: "librarian"  %>
+        <div class="flex justify-end">
+          <%= f.submit "Submit", class: "cursor-pointer mt-10 rounded-lg py-3 px-10 gap-x-2 text-sm font-semibold border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</main>
